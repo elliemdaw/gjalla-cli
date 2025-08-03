@@ -44,7 +44,7 @@ gjalla requirements <path to project> --list
 
 1. **📋 Document Discovery**: Finds all markdown files. Exclude patterns can be defined in .gjallaignore, otherwise falls back to common ignore patterns
 2. **🏷️ File Classification**: Uses regex patterns and lightweight NLP (`spacy`) to classify markdown files by type
-3. **🔧 Directory Creation**: Creates missing directories as needed (`specs/`, `specs/features/`, `specs/fixes/`, `specs/references/`... see below!)
+3. **🔧 Directory Creation**: Creates missing directories as needed (see below!)
 4. **📦 File Movement**: Moves files to appropriate locations with conflict resolution
 5. **💾 Backup**: Saves backup info for undo functionality
 
