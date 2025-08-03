@@ -5,11 +5,11 @@ A CLI for organizing, aggregating, and standardizing requirements and architectu
 ## Installation
 
 ```bash
-# Install from PyPI (coming soon)
+# Install from PyPI
 pip install gjalla
 
 # Install from source
-pip install git+https://github.com/your-company/gjalla.git
+pip install git+https://github.com/elliemdaw/gjalla-cli.git
 ```
 
 ## 🚀 Quick Start
@@ -18,24 +18,24 @@ pip install git+https://github.com/your-company/gjalla.git
 
 ```bash
 # Preview what would be organized
-gjalla organize ./my-project --dry-run
+gjalla organize <path to project> --dry-run
 
 # Apply the organization
-gjalla organize ./my-project
+gjalla organize <path to project>
 
 # Undo if needed
 # NOTE: undo has only been tested for the most recent action
-gjalla undo ./my-project
+gjalla undo <path to project>
 ```
 
 ### Aggregate Requirements
 
 ```bash
 # Parse structured .kiro requirements
-gjalla requirements ./my-project --kiro
+gjalla requirements <path to project> --kiro
 
 # List existing requirements
-gjalla requirements ./my-project --list
+gjalla requirements <path to project> --list
 ```
 
 ## How It Works
