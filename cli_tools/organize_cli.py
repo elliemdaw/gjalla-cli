@@ -112,6 +112,7 @@ def create_name_only_config_from_args(args):
     
     # Build exclusion patterns
     exclusion_patterns = [
+        "README*", "CONTRIBUTING*", "LICENSE*", "CHANGELOG*", "GEMINI.MD", "CLAUDE.MD",
         "*.git*", "*.svn*", "*__pycache__*", "*.DS_Store*", ".gjalla",
         "*node_modules*", "*.vscode*", "*.idea*", ".kiro", "**/dist", "**/build",
         "**/__pycache__", "**/.pytest_cache", "**/.DS_Store", "**/.git", "**/.svn"

@@ -132,8 +132,6 @@ class NameOnlyReorganizer:
             # Step 2: Classify and organize files
             logger.info("Classifying and organizing files")
             organization_result = self.classify_and_organize_files(project_dir, config, backup_session)
-            
-            # Calculate execution time
             end_time = datetime.now()
             execution_time = (end_time - start_time).total_seconds()
             
@@ -144,7 +142,6 @@ class NameOnlyReorganizer:
                 len(errors) == 0
             )
             
-            # Generate summary report
             summary_report = self._generate_summary_report(
                 project_dir, structure_result, organization_result, execution_time
             )
@@ -286,37 +283,8 @@ class NameOnlyReorganizer:
             
             # Classify files
             start_time = datetime.now()
-            
-            # Handle special files that should go directly to aimarkdowns/ without classification
-            special_files = []
-            regular_files = []
-            
-            for file_path in markdown_files:
-                if file_path.name.upper() in ['GEMINI.MD', 'CLAUDE.MD']:
-                    # Create a special ClassifiedFile for these files
-                    special_file = ClassifiedFile(
-                        file_path=file_path,
-                        category='aimarkdowns',  # Special category that maps directly to aimarkdowns/
-                        confidence=1.0,
-                        classification_reasons=[f"Special file {file_path.name} always goes to aimarkdowns/"],
-                        content_preview=None
-                    )
-                    special_files.append(special_file)
-                    logger.info(f"Special handling: {file_path.name} -> aimarkdowns/")
-                else:
-                    regular_files.append(file_path)
-            
-            # Classify regular files
-            if regular_files:
-                classified_regular_files = classifier.classify_files(regular_files)
-            else:
-                classified_regular_files = []
-            
-            # Combine special files and classified regular files
-            classified_files = special_files + classified_regular_files
+            classified_files = classifier.classify_files(markdown_files)
             classification_time = (datetime.now() - start_time).total_seconds()
-            
-            # Create classification result
             classification_distribution = {}
             low_confidence_files = []
             

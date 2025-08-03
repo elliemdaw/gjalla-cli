@@ -149,20 +149,13 @@ class FileOrganizer:
             
             for classified_file in classified_files:
                 try:
-                    # Special handling for GEMINI.md and CLAUDE.md - always go to base aimarkdowns/ folder
-                    if classified_file.file_path.name.upper() in ['GEMINI.MD', 'CLAUDE.MD']:
+                    if classified_file.category == 'aimarkdowns':
                         target_dir = Path('aimarkdowns')
                     else:
-                        # Determine target directory for this file's category
-                        # Handle special 'aimarkdowns' category for GEMINI.md and CLAUDE.md
-                        if classified_file.category == 'aimarkdowns':
-                            target_dir = Path('aimarkdowns')
-                        else:
-                            target_dir = self._get_target_directory(
-                                classified_file.category, 
-                                category_mapping,
-                                template,
-                                classified_file.file_path
+                        target_dir = self._get_target_directory(
+                            classified_file.category, 
+                            category_mapping,
+                            template
                             )
                     
                     if not target_dir:
@@ -365,8 +358,7 @@ class FileOrganizer:
     
     def _get_target_directory(self, category: str, 
                              category_mapping: Dict[str, str],
-                             template: ParsedTemplate,
-                             file_path: Optional[Path] = None) -> Optional[Path]:
+                             template: ParsedTemplate) -> Optional[Path]:
         """
         Get the target directory for a file category.
         
@@ -374,21 +366,10 @@ class FileOrganizer:
             category: File category (e.g., "features", "fixes", "reference")
             category_mapping: Mapping from categories to directory paths
             template: Parsed template for fallback directory resolution
-            file_path: Optional file path for special handling rules
             
         Returns:
             Path to target directory or None if not found
         """
-        # Special handling for GEMINI.md and CLAUDE.md - always go to base aimarkdowns/ folder
-        if file_path and file_path.name.upper() in ['GEMINI.MD', 'CLAUDE.MD']:
-            # Try to find aimarkdowns directory or use 'aimarkdowns' as default
-            if 'aimarkdowns' in category_mapping.values():
-                return Path('aimarkdowns')
-            elif self._directory_exists_in_template('aimarkdowns', template):
-                return Path('aimarkdowns')
-            else:
-                # Create aimarkdowns directory if it doesn't exist
-                return Path('aimarkdowns')
         
         # First try direct mapping
         if category in category_mapping:

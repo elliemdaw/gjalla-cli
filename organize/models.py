@@ -249,7 +249,7 @@ class NameOnlyConfig:
     template_file: Path = Path("templates/directory.md")
     custom_classification_patterns: Dict[str, List[str]] = field(default_factory=dict)
     exclusion_patterns: List[str] = field(default_factory=lambda: [
-        "README*", "CONTRIBUTING*", "LICENSE*", "CHANGELOG*"
+        "README*", "CONTRIBUTING*", "LICENSE*", "CHANGELOG*", "GEMINI.MD", "CLAUDE.MD"
     ])  # Note: .gitignore patterns and hidden files are automatically excluded
     backup_enabled: bool = True
     create_missing_directories: bool = True
