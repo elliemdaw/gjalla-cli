@@ -56,7 +56,7 @@ class PostInstallCommand(install):
 
 setup(
     name="gjalla",
-    version="0.1.0",
+    version="0.1.1",
     author="Ellie",
     author_email="ellie@gjalla.io",
     description="CLI tool for organizing, aggregating, and standardizing requirements and architecture information from markdowns written by agentic coding tools.",

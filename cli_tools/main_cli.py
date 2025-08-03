@@ -75,7 +75,7 @@ TIPS:
         """
     )
     
-    parser.add_argument('--version', action='version', version='%(prog)s 0.1.0')
+    parser.add_argument('--version', action='version', version='%(prog)s 0.1.1')
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
     setup_requirements_subcommand(subparsers)
     setup_organize_subcommand(subparsers)
