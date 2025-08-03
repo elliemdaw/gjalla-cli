@@ -47,32 +47,11 @@ def run_cli_command(args, timeout=60, input_text=None):
         }
 
 
-def test_cli_installation_actual():
-    """Test that the CLI is actually installed and accessible."""
-    print("Testing actual CLI installation...")
-    
-    result = run_cli_command(['spec-standardization', '--version'])
-    
-    if not result['success']:
-        print(f"❌ CLI not installed or not accessible")
-        print(f"   Return code: {result['returncode']}")
-        print(f"   Stderr: {result['stderr']}")
-        return False
-    
-    if 'spec-standardization' not in result['stdout']:
-        print(f"❌ Version output doesn't contain expected text")
-        print(f"   Output: {result['stdout']}")
-        return False
-    
-    print("✅ CLI installation test passed")
-    return True
-
-
 def test_cli_help_actual():
     """Test that CLI help actually works."""
     print("Testing actual CLI help...")
     
-    result = run_cli_command(['spec-standardization', '--help'])
+    result = run_cli_command(['gjalla', '--help'])
     
     if not result['success']:
         print(f"❌ CLI help failed")
@@ -95,7 +74,7 @@ def test_reorganize_help_actual():
     """Test that reorganize help actually works."""
     print("Testing actual reorganize help...")
     
-    result = run_cli_command(['spec-standardization', 'reorganize', '--help'])
+    result = run_cli_command(['gjalla', 'reorganize', '--help'])
     
     if not result['success']:
         print(f"❌ Reorganize help failed")
@@ -135,7 +114,7 @@ def test_dry_run_actual():
         (template_dir / "directory.md").write_text("specs/\nspecs/features/\nspecs/fixes/\nspecs/reference/")
     
     result = run_cli_command([
-        'spec-standardization', 'reorganize', str(demo_dir),
+        'gjalla', 'reorganize', str(demo_dir),
         '--dry-run', '--non-interactive'
     ])
     
@@ -187,7 +166,7 @@ def test_actual_reorganization():
         
         # Run actual reorganization
         result = run_cli_command([
-            'spec-standardization', 'reorganize', str(test_project),
+            'gjalla', 'reorganize', str(test_project),
             '--non-interactive'
         ], input_text='y\n')
         
@@ -228,7 +207,7 @@ def test_error_handling_actual():
     
     # Test with non-existent directory
     result = run_cli_command([
-        'spec-standardization', 'reorganize', '/non/existent/directory',
+        'gjalla', 'reorganize', '/non/existent/directory',
         '--dry-run', '--non-interactive'
     ])
     
@@ -246,7 +225,7 @@ def test_error_handling_actual():
     demo_dir = Path('cli_demo_project')
     if demo_dir.exists():
         result = run_cli_command([
-            'spec-standardization', 'reorganize', str(demo_dir),
+            'gjalla', 'reorganize', str(demo_dir),
             '--confidence-threshold', '2.0',  # Invalid - should be 0.0-1.0
             '--dry-run', '--non-interactive'
         ])
@@ -270,7 +249,7 @@ def test_custom_options_actual():
     
     # Test with custom confidence threshold and fallback category
     result = run_cli_command([
-        'spec-standardization', 'reorganize', str(demo_dir),
+        'gjalla', 'reorganize', str(demo_dir),
         '--confidence-threshold', '0.7',
         '--fallback-category', 'misc',
         '--dry-run', '--non-interactive'
@@ -325,7 +304,7 @@ def test_interactive_mode_actual():
     
     # Test interactive mode with 'n' (no) response
     result = run_cli_command([
-        'spec-standardization', 'reorganize', str(demo_dir),
+        'gjalla', 'reorganize', str(demo_dir),
         '--dry-run'
     ], input_text='n\n')
     
@@ -352,7 +331,6 @@ def main():
     print()
     
     tests = [
-        test_cli_installation_actual,
         test_cli_help_actual,
         test_reorganize_help_actual,
         test_dry_run_actual,

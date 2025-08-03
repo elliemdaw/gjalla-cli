@@ -210,6 +210,10 @@ class GitIntegration:
     
     def get_changes_since_commit(self, since_commit: str) -> List[GitCommitInfo]:
         """Get all commits and their changes since a specific commit."""
+        # Handle case where there are no commits yet
+        if since_commit == "0000000000000000000000000000000000000000":
+            return []
+            
         try:
             # Get list of commits since the specified commit
             commit_hashes = self._run_git_command([
@@ -227,7 +231,7 @@ class GitIntegration:
             return commits
         except GitIntegrationError as e:
             # Handle case where repository has no commits or invalid range
-            if any(phrase in str(e) for phrase in ["unknown revision", "bad revision", "ambiguous argument"]):
+            if any(phrase in str(e) for phrase in ["unknown revision", "bad revision", "ambiguous argument", "Invalid revision range"]):
                 return []
             raise
     

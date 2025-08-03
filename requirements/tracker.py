@@ -256,6 +256,10 @@ class RequirementsTracker:
         requirements = []
         current_commit = self.git.get_current_commit()
         
+        # Handle case where there are no commits yet
+        if current_commit == "0000000000000000000000000000000000000000":
+            return []
+        
         # Get changed files
         changed_files = self.git.get_changed_files_since_commit(since_commit)
         
@@ -336,6 +340,12 @@ class RequirementsTracker:
         # Load existing requirements
         existing_requirements = self._load_existing_requirements()
         
+        # Check if this is effectively a first scan
+        current_commit = self.git.get_current_commit()
+        if current_commit == "0000000000000000000000000000000000000000":
+            # No commits yet - treat as first scan
+            return self.perform_first_scan()
+        
         # Discover new requirements from changes
         new_from_git = self.discover_requirements_from_git_changes(self.metadata.last_scan_commit)
         
@@ -348,7 +358,28 @@ class RequirementsTracker:
         changeset = RequirementsChangeSet(
             added_requirements=new_from_git,
             from_commit=self.metadata.last_scan_commit,
-            to_commit=self.git.get_current_commit(),
+            to_commit=current_commit,
+            scan_date=datetime.now()
+        )
+        
+        return changeset
+    
+    def perform_first_scan(self) -> RequirementsChangeSet:
+        """Perform the first requirements scan for a project."""
+        # For first scan, only look at documentation
+        doc_requirements = self.discover_requirements_from_documentation()
+        
+        # Assign IDs
+        existing_requirements = {}
+        for i, req in enumerate(doc_requirements, 1):
+            req.id = f"REQ-{i:03d}"
+            existing_requirements[req.id] = req
+        
+        # Create changeset for initial scan
+        changeset = RequirementsChangeSet(
+            added_requirements=doc_requirements,
+            from_commit="initial",
+            to_commit="initial",  # No commits yet
             scan_date=datetime.now()
         )
         
@@ -356,6 +387,11 @@ class RequirementsTracker:
     
     def perform_full_scan(self) -> RequirementsChangeSet:
         """Perform a full requirements scan of the project."""
+        # Check if this is a repository with no commits
+        current_commit = self.git.get_current_commit()
+        if current_commit == "0000000000000000000000000000000000000000":
+            return self.perform_first_scan()
+        
         # Discover all requirements from documentation
         doc_requirements = self.discover_requirements_from_documentation()
         
@@ -369,7 +405,7 @@ class RequirementsTracker:
         changeset = RequirementsChangeSet(
             added_requirements=doc_requirements,
             from_commit="initial",
-            to_commit=self.git.get_current_commit(),
+            to_commit=current_commit,
             scan_date=datetime.now()
         )
         

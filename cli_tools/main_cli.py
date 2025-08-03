@@ -16,63 +16,66 @@ def create_main_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog='gjalla',
         description='Organize, standardize, and track documentation and requirements using regex-based analysis',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
-🚀 GJALLA TOOLKIT
-📖 HELP & GUIDE:
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                          🚀  GJALLA TOOLKIT GUIDE                            │
+╰──────────────────────────────────────────────────────────────────────────────╯
 
-1. PREVIEW CHANGES (RECOMMENDED):
-   gjalla organize <project_dir> --dry-run
-   • Shows what would be changed without making modifications
-   • Safe way to preview organization before applying
+CORE COMMANDS:
+─────────────
 
-2. ORGANIZE DOCUMENTATION:
-   gjalla organize <project_dir>
-   • Discovers and organizes markdown files
-   • Creates standardized directory structure
-   • Uses fast regex-based classification
-   • Formats content according to standards
-   • Creates aggregate requirements and architecture files
+  1. Preview Markdown Organization Changes (Recommended First Step)
+     gjalla organize <project_dir> --dry-run
+     • Shows what would be changed without making modifications
+     • Safe way to preview organization before applying changes
 
-3. UNDO ORGANIZATION:
-   gjalla undo <project_dir>
-   • Restores files to their original locations
-   • Uses backup from most recent organization session
+  2. Organize AI Markdowns
+     gjalla organize <project_dir>
+     • Discovers and organizes markdown files
+     • Creates standardized directory structure
 
-4. REQUIREMENTS TRACKING (STRUCTURED):
-   gjalla requirements <project_dir> --kiro
-   • Discovers requirements from structured .kiro directory files
-   • Creates/updates living requirements document in EARS format
-   • Uses fast regex-based parsing
+  3. Track Requirements
+     gjalla requirements <project_dir> --kiro
+     • Discovers requirements from .kiro directory
+     • Creates/updates living requirements document
 
-6. LIST EXISTING REQUIREMENTS:
-   gjalla requirements <project_dir> --list
-   • Displays requirements from existing requirements.md file
-   • Shows summary table without performing new scan
-   • Quick way to view current requirements status
+ADDITIONAL COMMANDS:
+──────────────────
 
-📋 EXAMPLES:
-  # Preview changes first (recommended workflow)
-  gjalla organize ./my-project --dry-run
-  
-  # Apply organization after reviewing preview
-  gjalla organize ./my-project
-  
-  # Track structured .kiro requirements
-  gjalla requirements ./my-project --kiro
-  
-  # List existing requirements without scanning
-  gjalla requirements ./my-project --list
-  
-  # Undo if needed
-  gjalla undo ./my-project
-  
-💡 TIP: Always run organize with --dry-run first to preview changes!
-🔑 NOTE: All functionality works without external API dependencies
-📂 TIP: Use --kiro flag for structured requirements (no API keys needed)
+  • List Requirements
+    gjalla requirements <project_dir> --list
+    Shows current requirements without new scan
+
+  • Undo Changes
+    gjalla undo <project_dir>
+    Restores files to their original locations - useful for undoing organization runs
+
+EXAMPLES:
+────────
+
+  # 1. Preview organization (recommended first step)
+    gjalla organize <project_dir> --dry-run
+
+  # 2. Apply changes after reviewing
+    gjalla organize <project_dir>
+
+  # 3. Track requirements
+    gjalla requirements <project_dir> --kiro
+
+  # 4. View current requirements
+    gjalla requirements <project_dir> --list
+
+TIPS:
+────
+
+  💡 Always use --dry-run first to preview changes
+  🔑 All features work without external APIs
+  📂 Use --kiro for structured requirements tracking
         """
     )
     
-    parser.add_argument('--version', action='version', version='%(prog)s 1.0.0')
+    parser.add_argument('--version', action='version', version='%(prog)s 0.1.0')
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
     setup_requirements_subcommand(subparsers)
     setup_organize_subcommand(subparsers)
